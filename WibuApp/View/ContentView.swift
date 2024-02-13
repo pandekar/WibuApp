@@ -13,6 +13,7 @@ struct ContentView: View {
     let columns: Array<GridItem> = [
         GridItem(.adaptive(minimum: 100), spacing: 10)
     ]
+    let transition = Transaction(animation: .easeInOut(duration: 3.0))
     
     var body: some View {
         ScrollView {
@@ -21,7 +22,7 @@ struct ContentView: View {
                     Group {
                         let imageUrl = URL(string: waifu.image)
                         VStack(alignment: .leading) {
-                            AsyncImage(url: imageUrl) { fetchedWaifu in
+                            AsyncImage(url: imageUrl, transaction: transition) { fetchedWaifu in
                                 switch fetchedWaifu {
                                 case .empty:
                                     waitView()
