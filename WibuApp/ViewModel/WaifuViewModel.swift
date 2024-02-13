@@ -11,6 +11,8 @@ import SwiftUI
 @MainActor
 class WaifuViewModel: ObservableObject {
     @Published var waifus: Array<Waifu> = []
+    @Published var imageToShare: UIImage?
+    @Published var shouldShowBottomsheet: Bool = false
     
     func loadWaifus() async throws -> Array<Waifu> {
         // 1: Validasi URL
@@ -35,5 +37,38 @@ class WaifuViewModel: ObservableObject {
         } catch {
             print(error)
         }
+    }
+    
+    func deleteWaifu(id: UUID) {
+        guard let targetWaifu = waifus.firstIndex(where: { waifu in
+            waifu.id == id
+        }) else {
+            print("no waifu found")
+            
+            return
+        }
+        
+        waifus.remove(at: targetWaifu)
+    }
+    
+    // download Image
+    func downloadImage(from urlString: String) async -> UIImage? {
+        guard let url = URL(string: urlString) else { return nil }
+        
+        do {
+            let (data, _) = try await URLSession.shared.data(from: url)
+            
+            return UIImage(data: data)
+        } catch {
+            print("Error downloading image: \(error)")
+            
+            return nil
+        }
+    }
+    
+    // prepare image
+    func prepareImageAndShowsheet(from urlString: String) async {
+        imageToShare = await downloadImage(from: urlString)
+        shouldShowBottomsheet = true
     }
 }

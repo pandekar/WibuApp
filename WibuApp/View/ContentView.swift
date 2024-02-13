@@ -65,16 +65,31 @@ struct ContentView: View {
                         .padding()
                         .contextMenu(ContextMenu(menuItems: {
                             Button {
-                                // code here
+                                Task {
+                                    await waifuVM.prepareImageAndShowsheet(from: waifu.image)
+                                }
                             } label: {
                                 Label("Share", systemImage: "square.and.arrow.up")
                             }
                             Button {
-                                // code here
+                                waifuVM.deleteWaifu(id: waifu.id)
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
                         }))
+                        .sheet(isPresented: $waifuVM.shouldShowBottomsheet, content: {
+                            Group {
+                                let defaultText = "You are about to share this items"
+                                
+                                if let imageToShare = waifuVM.imageToShare {
+                                    ActivityView(activityItem: [defaultText, imageToShare])
+                                } else {
+                                    ActivityView(activityItem: [defaultText])
+                                }
+                            }
+                            // ukuran bottomsheet
+                            .presentationDetents([.medium, .large])
+                        })
                     }
                 }
             }
