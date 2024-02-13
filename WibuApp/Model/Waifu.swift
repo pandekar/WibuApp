@@ -8,7 +8,7 @@
 import Foundation
 
 struct Waifu: Decodable, Identifiable {
-    var id = UUID()
+    let id = UUID()
     let image: String
     let anime: String
     let name: String

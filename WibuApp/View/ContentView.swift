@@ -20,28 +20,48 @@ struct ContentView: View {
                 ForEach(waifuVM.waifus) { waifu in
                     Group {
                         let imageUrl = URL(string: waifu.image)
-                        
-                        AsyncImage(url: imageUrl) { fetchedWaifu in
-                            switch fetchedWaifu {
-                            case .empty:
-                                waitView()
-                                 
-                            case .success(let image):
-                                image.resizable().scaledToFill()
-                                
-                            case .failure(let error):
-                                VStack {
-                                    Image(systemName: "photo.fill")
-                                    Text(error.localizedDescription)
+                        VStack(alignment: .leading) {
+                            AsyncImage(url: imageUrl) { fetchedWaifu in
+                                switch fetchedWaifu {
+                                case .empty:
+                                    waitView()
+                                     
+                                case .success(let image):
+                                    image.resizable().scaledToFill()
+                                    
+                                case .failure(let error):
+                                    VStack {
+                                        Image(systemName: "photo.fill")
+                                        Text(error.localizedDescription)
+                                    }
+                                    
+                                @unknown default:
+                                    fatalError()
                                 }
-                                
-                            @unknown default:
-                                fatalError()
                             }
+                            .frame(width: 100, height: 100)
+                            .clipShape(RoundedRectangle(cornerRadius: 10)) 
+                            
+                            Text(waifu.name)
+                                .bold()
+                            Spacer()
+                            Text(waifu.anime)
+                                .lineLimit(1)
                         }
                     }
-                    .frame(width: 100, height: 100)
-                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .padding()
+                    .contextMenu(ContextMenu(menuItems: {
+                        Button {
+                            // code here
+                        } label: {
+                            Label("Share", systemImage: "square.and.arrow.up")
+                        }
+                        Button {
+                            // code here
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+                    }))
                 }
             }
         }
