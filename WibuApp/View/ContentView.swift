@@ -99,8 +99,16 @@ struct ContentView: View {
             .task {
                 await waifuVM.fetchWaifus()
             }
+            .refreshable(action: {
+                await waifuVM.fetchWaifus()
+            })
             .navigationTitle("Wibu")
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .overlay {
+                if filteredWaifus.isEmpty {
+                    ContentUnavailableView.search(text: searchText)
+                }
+            }
         }
         .alert(isPresented: $isDeleteAlertPresented) {
             // show alert before delete
