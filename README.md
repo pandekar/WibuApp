@@ -1,3 +1,3 @@
 Assignment 2: Wibu App
 
-![Simulator Screen Recording - iPhone 15 Pro - 2024-02-14 at 15 33 39](https://github.com/pandekar/WibuApp/assets/23054969/bf38c1ef-ebea-4c77-8878-0f640f3f9f05)
+![Simulator Screen Recording - iPhone 15 Pro - 2024-02-14 at 16 12 55](https://github.com/pandekar/WibuApp/assets/23054969/d3b90c1d-1257-490b-85dc-868451fe5940)
