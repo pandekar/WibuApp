@@ -75,7 +75,7 @@ struct ContentView: View {
                             }
                             Button {
                                 selectedDeleteWaifu = waifu
-                                isDeleteAlertPresented = true
+                                isDeleteAlertPresented.toggle()
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
