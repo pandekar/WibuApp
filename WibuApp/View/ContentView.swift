@@ -45,10 +45,13 @@ struct ContentView: View {
                                         image.resizable().scaledToFill()
                                         
                                     case .failure(let error):
-                                        VStack {
-                                            Image(systemName: "photo.fill")
-                                            Text(error.localizedDescription)
+                                        ZStack {
+                                            RoundedRectangle(cornerRadius: 10)
+                                            Image(systemName: "photo.on.rectangle.angled")
+                                                .font(.system(size: 22))
+                                                .foregroundStyle(.white)
                                         }
+                                        .foregroundStyle(.purple)
                                         
                                     @unknown default:
                                         fatalError()
