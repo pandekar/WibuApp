@@ -103,7 +103,12 @@ struct ContentView: View {
                 await waifuVM.fetchWaifus()
             })
             .navigationTitle("Wibu")
-            .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
+            .searchable(
+                text: $searchText,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "e.g Ikuyo Kita"
+            )
+            .autocorrectionDisabled(true)
             .overlay {
                 if filteredWaifus.isEmpty {
                     ContentUnavailableView.search(text: searchText)
