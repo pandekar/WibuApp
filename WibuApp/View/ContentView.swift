@@ -10,7 +10,9 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var waifuVM = WaifuViewModel()
     @State private var searchText: String = ""
-    
+    @State private var isDeleteAlertPresented = false
+    @State private var selectedDeleteWaifu: Waifu?
+
     var filteredWaifus: Array<Waifu> {
         if searchText.isEmpty {
             return waifuVM.waifus
@@ -53,7 +55,7 @@ struct ContentView: View {
                                     }
                                 }
                                 .frame(width: 100, height: 100)
-                                .clipShape(RoundedRectangle(cornerRadius: 10)) 
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
                                 
                                 Text(waifu.name)
                                     .bold()
@@ -72,7 +74,8 @@ struct ContentView: View {
                                 Label("Share", systemImage: "square.and.arrow.up")
                             }
                             Button {
-                                waifuVM.deleteWaifu(id: waifu.id)
+                                selectedDeleteWaifu = waifu
+                                isDeleteAlertPresented = true
                             } label: {
                                 Label("Delete", systemImage: "trash")
                             }
@@ -99,11 +102,20 @@ struct ContentView: View {
             .navigationTitle("Wibu")
             .searchable(text: $searchText, placement: .navigationBarDrawer(displayMode: .always))
         }
+        .alert(isPresented: $isDeleteAlertPresented) {
+            // show alert before delete
+            Alert(
+                title: Text("Delete Waifu"),
+                message: Text("Are you sure you want to delete waifu \(selectedDeleteWaifu?.name ?? "")?"),
+                primaryButton: .destructive(Text("Delete")) {
+                    if let waifu = selectedDeleteWaifu {
+                        waifuVM.deleteWaifu(id: waifu.id)
+                    }
+                },
+                secondaryButton: .cancel()
+            )
+        }
     }
-}
-
-#Preview {
-    ContentView()
 }
 
 @ViewBuilder
@@ -115,4 +127,8 @@ func waitView() -> some View {
         
         Text("fetching image...")
     }
+}
+
+#Preview {
+    ContentView()
 }
